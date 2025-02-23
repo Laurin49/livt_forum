@@ -3,20 +3,44 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $users = User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $posts = Post::factory(200)->recycle($users)->create();
+
+        $comments = Comment::factory(100)->recycle($users)->recycle($posts)->create();
+
+        $admin = User::factory()
+            ->has(Post::factory(20))
+            ->has(Comment::factory(40)->recycle($posts))
+            ->create([
+                'name' => 'Admin',
+                'email' => 'admin@hsv.de',
+                'email_verified_at' => now(),
+                'password' => bcrypt('hsv1887tv'),
+                'remember_token' => Str::random(10),
+        ]);
+
+        $elfadli = User::factory()
+            ->has(Post::factory(20))
+            ->has(Comment::factory(40)->recycle($posts))
+            ->create([
+                'name' => 'Elfadli',
+                'email' => 'elfadli@hsv.de',
+                'email_verified_at' => now(),
+                'password' => bcrypt('hsv1887tv'),
+                'remember_token' => Str::random(10),
+            ]);
+
     }
 }
