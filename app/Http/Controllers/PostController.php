@@ -15,6 +15,8 @@ class PostController extends Controller
     {
         return inertia('Posts/Index', [
             'posts' => PostResource::collection(Post::paginate(10)),
+            // eager loading the user relationship
+            // 'posts' => PostResource::collection(Post::with('user')->paginate()),
         ]);
     }
 

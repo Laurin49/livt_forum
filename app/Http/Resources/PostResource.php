@@ -16,6 +16,8 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // tell our post resource not to load the user relationship
+            // 'user' => $this->whenLoaded('user', fn () => UserResource::make($this->user)),
             'user' => UserResource::make($this->user),
             'title' => $this->title,
             'body' => $this->body,
